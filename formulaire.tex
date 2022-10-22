@@ -1,0 +1,296 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LaTeX Template: Two Column Colour Article
+%
+% Source: http://www.howtotex.com/
+% Feel free to distribute this template, but please keep the
+% referal to howtotex.com.
+% Date: Feb 2011
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% adaptions made by wolfgang stoettner mail@stoettner.net
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Preamble
+\documentclass[	DIV=calc,%
+							paper=a4,%
+							fontsize=10pt,%
+							twocolumn]{scrartcl} % KOMA-article class
+\usepackage[french]{babel}	% English language/hyphenation
+\usepackage[protrusion=true,expansion=true]{microtype}	% Better typography
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage{pythontex} % Math packages
+\usepackage[pdftex]{graphicx} % Enable pdflatex
+\usepackage{wrapfig} % enable figure wrapping
+\usepackage[svgnames]{xcolor} % Enabling colors by their 'svgnames'
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats
+\usepackage{epstopdf} % Converts .eps to .pdf
+\usepackage{subfig}	% Subfigures
+\usepackage{booktabs} % Nicer tables
+\usepackage{fix-cm}	% Custom fontsizes
+\usepackage{booktabs} % prof. looking tables (www.en.wikibooks.org/wiki/LaTeX/Tables#Professional_tables)
+\usepackage{float}
+\usepackage{tgtermes}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{pdfpages}
+\usepackage[smartEllipses]{markdown}
+
+%%% Custom sectioning (sectsty package)
+\usepackage{sectsty} % Custom sectioning (see below)
+\allsectionsfont{%		% Change font of al section commands
+	\usefont{OT1}{phv}{b}{n}%	% bch-b-n: CharterBT-Bold font
+	}
+
+\sectionfont{%		% Change font of \section command
+	\usefont{OT1}{phv}{b}{n}%	% bch-b-n: CharterBT-Bold font
+	}
+%%% Headers and footers
+\usepackage{fancyhdr} % Needed to define custom headers/footers
+	\pagestyle{fancy} % Enabling the custom headers/footers
+\usepackage{lastpage}	
+
+% Header (empty)
+\lhead{}
+\chead{}
+\rhead{}
+% Footer (you may change this to your own needs)
+\lfoot{\footnotesize \texttt{formulaire mécatronique 2} \textbullet \vspace{5pt} Antonin Kenzi}
+\cfoot{}
+\rfoot{\footnotesize page \thepage\ of \pageref{LastPage}}	% "Page 1 of 2"
+\renewcommand{\headrulewidth}{0.0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\newcommand{\hformbar}[1]{\bigskip\hrule\vspace{5pt}} % creates a horizontal bar to separate formulae better; space adaptions can be made centrally here
+
+
+%%% Creating an initial of the very first character of the content
+\usepackage{lettrine}
+\newcommand{\initial}[1]{%
+     \lettrine[lines=3,lhang=0.3,nindent=0em]{
+     				\color{DarkGoldenrod}
+     				{\textsf{#1}}}{}}
+
+%%% Title, author and date metadata
+\usepackage{titling} % For custom titles
+
+\newcommand{\HorRule}{\color{DarkGoldenrod}%	% Creating a horizontal rule
+									  	\rule{\linewidth}{1pt}%
+										}
+\pretitle{\vspace{-83pt} \begin{flushleft} \HorRule 
+				\fontsize{15}{15} \usefont{OT1}{phv}{b}{n} \color{DarkRed} \selectfont 
+				}
+\title{Formulaire Reg Num} % Title of your article goes here
+\posttitle{\par\end{flushleft}}
+\preauthor{\vspace{-20pt} \begin{flushleft}\large \usefont{OT1}{phv}{b}{sl} \color{DarkRed}}
+\author{Kenzi Antonin}	% Author name goes here
+\postauthor{\vspace{-20pt} \footnotesize \usefont{OT1}{phv}{m}{sl} \color{Black}  \par\end{flushleft}\HorRule}
+\date{\vspace{-30pt} \today} % No date
+\newcounter{mycounter}
+%%% wws: create a non-indented formula name
+\newcommand{\formdesc}[1]{\noindent\textbf{#1} \addtocounter{mycounter}{1} \hfill \themycounter}
+
+\newcommand{\formtitle}[1]{\noindent\underline{#1}}
+
+%%% Begin document -----------------------------------------------------------------
+\begin{document}
+{\maketitle }
+\thispagestyle{fancy} 	% Enabling the custom headers/footers for the first page 
+% The first character should be within \initial{}
+
+\formdesc{Moteur à courant continu}
+\begin{enumerate}
+    \item Stator : fixe
+    \item Rotor : mobile
+    \item Collecteur : élément d'usure 
+\end{enumerate}
+
+\formtitle{Production de couple :}
+\begin{itemize}
+    \item spire parcourue par un courant $i_a(t)$
+    \item Champ d'induction B 
+\end{itemize}
+Par Laplace :
+
+{\hfill $\vec{F} = (\vec{i_a}(t) \wedge  \vec{B})\cdot l$\hfill}
+
+cette force produit un couple faisant tourner le moteur : 
+
+{\hfill $T_{em}(t) = k_T \cdot i_a(z)$\hfill}
+
+cela induit une tension :
+
+{\hfill $u_i(t) = \cfrac{d \Phi(t)}{dt}=k_u \cdot \omega(t)$\hfill}
+
+\hformbar
+
+\formdesc{Équations du moteur Dc et de la charge}
+{ \vspace{-3mm}
+    \begin{figure}[H]
+        \includegraphics[width=0.49\textwidth]{img/equation_mot.JPG}
+    \end{figure}
+}
+\formtitle{Équation de tension : }
+
+{\hfill $u_a(t) = R_a \cdot i_a + L_a \cfrac{di_a(t)}{dt}+u_{im}(t)$\hfill}
+
+{\hfill $I_a(s) = [U_a(s).U_{im}(s)] \cdot \cfrac{ \cfrac{1}{R_a}}{1+s\cfrac{L_a}{R_a}}  $\hfill}
+
+
+\formtitle{Équation de mouvement :} 
+
+{\hfill $Jt \cfrac{d\Omega(t)}{dt} = T_{em}(t) - C_v \Omega(t) - Tres(t) $\hfill}
+
+{\hfill $\Omega(s) = [T_{em}(s).T_{res}(s)] \cdot \cfrac{ \cfrac{1}{C_v}}{1+s\cfrac{J_t}{C_v}}  $\hfill}
+
+\formtitle{Équation de couplage : }
+
+{\hfill $k_T = \cfrac{T_{em}(t)}{i_a(t)} = \cfrac{u_{im}(t)}{\Omega(t) }= k_u$\hfill}
+
+\formtitle{Hypothèses :}
+\begin{enumerate}
+    \item Linéarité : pas de saturation du fer, résistance Cst
+    \item Frottements négligeables, généralement < 5\% du couple nominal
+    \item arbre rigide en torsion : ce n’est pas toujours le cas
+\end{enumerate}
+
+\formdesc{Calcul des fonctions de transfert}
+
+on introduit :
+\begin{itemize}
+    \item $\tau_e = \cfrac{L_a}{R_a}$
+    \item $\tau_m = \cfrac{J_t\cdot R_a}{k_T\cdot k_E}$
+\end{itemize}
+
+Les fonctions de transfert du moteur DC et de la charge, sans frottements visqueux, deviennent :
+
+
+{\hfill $G_{u\omega} = \cfrac{\Omega(s)}{U_a(s)} = \cfrac{1}{k_E}\cdot\cfrac{1}{1 + s \cdot \tau_m + s^2 \cdot \tau_m \cdot \tau_e} $\hfill}
+
+\vspace{3mm}
+{\hfill $G_{ui} = \cfrac{I_a(s)}{U_a(s)} = \cfrac{J_t}{k_E\cdot k_T}\cdot\cfrac{1}{1 + s \cdot \tau_m + s^2 \cdot \tau_m \cdot \tau_e} $\hfill}
+
+\vspace{3mm}
+
+\formtitle{Cas particulier : $\tau_m \leqslant 4 \cdot\tau_e$}
+
+Dénominateur défini par 2 pôles réels :
+
+\vspace{3mm}
+{\hfill $s_{1,2} = \cfrac{-\tau_m \pm \sqrt{\tau_m^2 - 4 \cdot \tau_m \cdot \tau_e}}{2 \cdot \tau_m \cdot \tau_e} $\hfill}
+
+\vspace{3mm}
+ce qui décompose le système tel que : 
+
+{\hfill $ \cfrac{1}{(1+s\cdot \tau_{max})(1+s\cdot \tau_{min})}$\hfill}
+avec : {\hfill $\tau_{max,min} = -\cfrac{1}{s_{1,2}}$\hfill}
+
+\vspace{3mm}
+\formtitle{Cas particulier : $\tau_m \ggg \tau_e $}
+{\hfill $ \cfrac{1}{(1+s\cdot \tau_{m})(1+s\cdot \tau_{e})}$\hfill}
+
+
+\formtitle{Fonction page 1.22 :}
+
+\hformbar
+
+
+\formdesc{\color{DarkRed} Alimentations des moteurs DC}
+
+\formtitle{Méthodes :}
+
+\begin{enumerate}
+    \item Analogique : Grande perte à basse vitesse. 
+    \item Alimentation à découpage : pertes variateur constant
+\end{enumerate}
+
+\formtitle{Pont en « H » :}
+
+\begin{figure}[H]
+    \begin{center}      
+        \includegraphics[width = 0.3\textwidth]{img/Pont_H.JPG}
+    \end{center}
+\end{figure}
+\formtitle{Gestion par pulse width modulation}
+
+\begin{enumerate}
+    \item \formtitle{Par régime stationnaire : }
+
+{\hfill $ \bar{U_{M}} = U_A * \biggl(2 \cdot \cfrac{t_e}{T_P} -1 \biggr)$\hfill}
+
+\item \formtitle{Par «sous-oscillation» : }
+
+\item \formtitle{Par fonction de transfert : }
+
+    \begin{figure}[H]
+        \begin{center}      
+            \includegraphics[width = 0.4\textwidth]{img/PWM_FT.JPG}
+        \end{center}
+    \end{figure}
+
+    {\hfill $ K_{cm} = \cfrac{U_A}{\hat{u_{cm}}}$\hfill}
+
+\end{enumerate}
+
+\formtitle{Approximation du retard pur : }
+\begin{itemize}
+    \item Si analogique 
+        \begin{itemize}
+            \item uh triangulaire : $T_{cm} = \cfrac{T_p}{3} $
+            \item uh dent de scie : $T_{cm} = \cfrac{T_p}{2} $
+        \end{itemize}
+    \item Si Numérique : $T_{cm} = T_p $
+\end{itemize}
+
+
+
+\begin{table}
+    \begin{tabular}{c | c}
+        1er ordre : & Padé : \\
+        {\hfill $ e^{-s\cdot T_{cm}} \backsimeq \cfrac{1}{1 + s\cdot T_{cm}} $\hfill} & {\hfill $ e^{-s\cdot T_{cm}} \backsimeq \cfrac{1 - s \cdot \cfrac{T_{cm}}{2}}{1 + s \cdot \cfrac{T_{cm}}{2}} $\hfill}
+    \end{tabular}
+\end{table}
+
+
+\hformbar
+
+
+\formdesc{Rappel sur le moment d’inertie}
+
+\begin{figure}[H]
+    \begin{center}      
+        \includegraphics[width = 0.49\textwidth]{img/Rappel_inertie1.JPG}
+    \end{center}
+\end{figure}
+
+\begin{enumerate}
+    \item Courroie ou crémaillère : $J_{eq} = m \cdot r^2$
+    \item Vis-à-billes : $J_{eq} = m \cdot \biggl(\cfrac{p}{2\pi}\biggr)^2$
+    \item Réducteurs : $J_{eq} = J_{ch}\cdot \cfrac{1}{i^2}$
+\end{enumerate}
+\hformbar
+
+
+\formdesc{Réglage de la tension / vitesse}
+
+\hformbar
+
+\formdesc{Anti-windup}
+
+
+\hformbar
+
+
+\formdesc{Réglage du courant / couple}
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width = 0.49\textwidth]{img/Regulation_courrant.JPG}
+
+        \includegraphics[width = 0.4\textwidth]{img/Regulation_courrant_Gai.JPG}
+
+    \end{center}
+\end{figure}
+
+{\scriptsize $G_{ai}(s) = \cfrac{K_{cm} \cdot K_{mi} \cdot J_t}{k_t \cdot k_E} \cdot \cfrac{s}{1+s \cdot \tau_m + s^2 \cdot \tau_e \cdot \tau_m} \cdot \cfrac{1}{1+s \cdot \tau_{cm}}\cdot \cfrac{1}{1+s \cdot \tau_{mi}} $\hfill}
+
+\hformbar
+
+
+\end{document}
