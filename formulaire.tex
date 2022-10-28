@@ -288,9 +288,70 @@ avec : {\hfill $\tau_{max,min} = -\cfrac{1}{s_{1,2}}$\hfill}
     \end{center}
 \end{figure}
 
-{\scriptsize $G_{ai}(s) = \cfrac{K_{cm} \cdot K_{mi} \cdot J_t}{k_t \cdot k_E} \cdot \cfrac{s}{1+s \cdot \tau_m + s^2 \cdot \tau_e \cdot \tau_m} \cdot \cfrac{1}{1+s \cdot \tau_{cm}}\cdot \cfrac{1}{1+s \cdot \tau_{mi}} $\hfill}
+{\footnotesize $G_{ai}(s) = K_{ai} \cdot \cfrac{s}{1+s \cdot \tau_m + s^2 \cdot \tau_e \cdot \tau_m} \cdot \cfrac{1}{1+s \cdot \tau_{cm}}\cdot \cfrac{1}{1+s \cdot \tau_{mi}} $}
+
+\vspace{3mm}
+
+{\footnotesize$K_{ai} = \cfrac{K_{cm} \cdot K_{mi} \cdot J_t}{k_t \cdot k_E}$}
 
 \hformbar
 
+\formtitle{Régulateur PI}
+\begin{itemize}
+    \item composante I    
+        \begin{itemize}
+            \item pour compenser le comportement dérivateur à basses fréquences
+            \item pour compenser les couples perturbateur à moyennes fréquences
+        \end{itemize}
+    \item composante P  
+    \begin{itemize}
+        \item pour annuler la composante I en hautes fréquences donc, pour ne pas trop dégrader la bande passante
+    \end{itemize}
+\end{itemize}
+
+\formtitle{fonction de transfert en boucle ouverte : }
+
+\vspace{3mm}
+
+{\footnotesize $G_{reg,{PI}}(s) =  K_{PI} \cdot \cfrac{1+s\cdot\tau_{ii}}{s\cdot\tau_{ii}} \cdot G_{ai}(s) $}
+\vspace{3mm}
+
+\formtitle{ ajustage traditionnel (compensation du pôle dominant)}
+
+\vspace{3mm}
+$\tau_{ii} = \tau_{dominant}$
+\vspace{3mm}
+
+\underline{Problème :}
+\begin{itemize}
+    \item  erreur statique importante ($~27\%$)
+\end{itemize}
+
+\formtitle{ ajustage sur les petites constantes de temps}
+
+\vspace{3mm}
+$\tau_{ii} = N \cdot \sum\tau_{pct} = N \cdot (\tau_{cm}+ \tau_{mi})$ ,avec N $\leq$ 10 [5...30]
+
+\underline{Avantages :}
+\begin{itemize}
+    \item Système en boucle fermée avec $K_{pi} = +13 dB$
+    \item Erreur statique quasi nulle
+    \item Bande passante quasi inchangée
+\end{itemize}
+
+
+\formdesc{Réglage du courant / position}
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width = 0.49\textwidth]{img/Regulation_courrant_pos.JPG}
+    \end{center}
+\end{figure}
+
+\formtitle{Capteur de position}
+\underline{Fonction de transfert (approximation) :}
+
+\vspace{3mm}
+$G_{m\theta}(s) = \cfrac{K_{m\theta}}{1+\tau_{m\theta}} $
 
 \end{document}
+
