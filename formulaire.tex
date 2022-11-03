@@ -58,7 +58,7 @@
 \rfoot{\footnotesize page \thepage\ of \pageref{LastPage}}	% "Page 1 of 2"
 \renewcommand{\headrulewidth}{0.0pt}
 \renewcommand{\footrulewidth}{0.4pt}
-\newcommand{\hformbar}[1]{\bigskip\hrule\vspace{5pt}} % creates a horizontal bar to separate formulae better; space adaptions can be made centrally here
+\newcommand{\hformbar}[1]{\bigskip \hrule \vspace{1pt} \hrule \vspace{5pt}} % creates a horizontal bar to separate formulae better; space adaptions can be made centrally here
 
 
 %%% Creating an initial of the very first character of the content
@@ -85,13 +85,14 @@
 \date{\vspace{-30pt} \today} % No date
 \newcounter{mycounter}
 %%% wws: create a non-indented formula name
-\newcommand{\formdesc}[1]{\noindent\textbf{#1} \addtocounter{mycounter}{1} \hfill \themycounter}
+\newcommand{\formdesc}[1]{\large\textbf{#1} \addtocounter{mycounter}{1} \hfill \themycounter \\ \vspace{-3mm} \hrule \vspace{2mm}}
 
-\newcommand{\formtitle}[1]{\noindent\underline{#1}}
+\newcommand{\formtitle}[1]{\large\underline{#1}}
+\setlength\parindent{0pt}
 
 %%% Begin document -----------------------------------------------------------------
 \begin{document}
-{\maketitle }
+\maketitle
 \thispagestyle{fancy} 	% Enabling the custom headers/footers for the first page 
 % The first character should be within \initial{}
 
@@ -122,9 +123,10 @@ cela induit une tension :
 \hformbar
 
 \formdesc{Équations du moteur Dc et de la charge}
+
 { \vspace{-3mm}
     \begin{figure}[H]
-        \includegraphics[width=0.49\textwidth]{img/equation_mot.JPG}
+        \includegraphics[width=0.45\textwidth]{img/equation_mot.JPG}
     \end{figure}
 }
 \formtitle{Équation de tension : }
@@ -192,7 +194,7 @@ avec : {\hfill $\tau_{max,min} = -\cfrac{1}{s_{1,2}}$\hfill}
 \hformbar
 
 
-\formdesc{\color{DarkRed} Alimentations des moteurs DC}
+\formdesc{Alimentations des moteurs DC}
 
 \formtitle{Méthodes :}
 
@@ -233,8 +235,8 @@ avec : {\hfill $\tau_{max,min} = -\cfrac{1}{s_{1,2}}$\hfill}
 \begin{itemize}
     \item Si analogique 
         \begin{itemize}
-            \item uh triangulaire : $T_{cm} = \cfrac{T_p}{3} $
-            \item uh dent de scie : $T_{cm} = \cfrac{T_p}{2} $
+            \item $u_h$ triangulaire : $T_{cm} = \cfrac{T_p}{3} $
+            \item $u_h$ dent de scie : $T_{cm} = \cfrac{T_p}{2} $
         \end{itemize}
     \item Si Numérique : $T_{cm} = T_p $
 \end{itemize}
@@ -260,11 +262,20 @@ avec : {\hfill $\tau_{max,min} = -\cfrac{1}{s_{1,2}}$\hfill}
     \end{center}
 \end{figure}
 
-\begin{enumerate}
-    \item Courroie ou crémaillère : $J_{eq} = m \cdot r^2$
-    \item Vis-à-billes : $J_{eq} = m \cdot \biggl(\cfrac{p}{2\pi}\biggr)^2$
-    \item Réducteurs : $J_{eq} = J_{ch}\cdot \cfrac{1}{i^2}$
-\end{enumerate}
+Courroie ou crémaillère : $J_{eq} = m \cdot r^2$
+
+{\centering \includegraphics[width = 0.3\textwidth]{img/Cremaillere.JPG}}
+
+\vspace{1cm}
+
+Vis-à-billes : $J_{eq} = m \cdot \biggl(\cfrac{p}{2\pi}\biggr)^2$
+
+{\centering \includegraphics[width = 0.3\textwidth]{img/vis.JPG}}
+
+Réducteurs : $J_{eq} = J_{ch}\cdot \cfrac{1}{i^2}$
+
+{\centering \includegraphics[width = 0.3\textwidth]{img/Reducteur.JPG}}
+
 \hformbar
 
 
@@ -274,9 +285,7 @@ avec : {\hfill $\tau_{max,min} = -\cfrac{1}{s_{1,2}}$\hfill}
 
 \formdesc{Anti-windup}
 
-
 \hformbar
-
 
 \formdesc{Réglage du courant / couple}
 \begin{figure}[H]
@@ -296,7 +305,8 @@ avec : {\hfill $\tau_{max,min} = -\cfrac{1}{s_{1,2}}$\hfill}
 
 \hformbar
 
-\formtitle{Régulateur PI}
+\formdesc{Régulateur PI}
+
 \begin{itemize}
     \item composante I    
         \begin{itemize}
@@ -313,10 +323,11 @@ avec : {\hfill $\tau_{max,min} = -\cfrac{1}{s_{1,2}}$\hfill}
 
 \vspace{3mm}
 
-{\footnotesize $G_{reg,{PI}}(s) =  K_{PI} \cdot \cfrac{1+s\cdot\tau_{ii}}{s\cdot\tau_{ii}} \cdot G_{ai}(s) $}
+{ $G_{reg,{PI}}(s) =  K_{PI} \cdot \cfrac{1+s\cdot\tau_{ii}}{s\cdot\tau_{ii}} \cdot G_{ai}(s) $}
+
 \vspace{3mm}
 
-\formtitle{ ajustage traditionnel (compensation du pôle dominant)}
+\formtitle{Ajustage traditionnel (compensation du pôle dominant)}
 
 \vspace{3mm}
 $\tau_{ii} = \tau_{dominant}$
@@ -327,7 +338,7 @@ $\tau_{ii} = \tau_{dominant}$
     \item  erreur statique importante ($~27\%$)
 \end{itemize}
 
-\formtitle{ ajustage sur les petites constantes de temps}
+\formtitle{Ajustage sur les petites constantes de temps}
 
 \vspace{3mm}
 $\tau_{ii} = N \cdot \sum\tau_{pct} = N \cdot (\tau_{cm}+ \tau_{mi})$ ,avec N $\leq$ 10 [5...30]
