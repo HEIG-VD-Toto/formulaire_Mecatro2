@@ -33,6 +33,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{pdfpages}
 \usepackage[smartEllipses]{markdown}
+\usepackage[top=1.5cm, bottom=1cm, left=1cm, right=1cm, showframe=false]{geometry}
 
 %%% Custom sectioning (sectsty package)
 \usepackage{sectsty} % Custom sectioning (see below)
@@ -77,7 +78,7 @@
 \pretitle{\vspace{-83pt} \begin{flushleft} \HorRule 
 				\fontsize{15}{15} \usefont{OT1}{phv}{b}{n} \color{DarkRed} \selectfont 
 				}
-\title{Formulaire Reg Num} % Title of your article goes here
+\title{Formulaire mécatronique 2} % Title of your article goes here
 \posttitle{\par\end{flushleft}}
 \preauthor{\vspace{-20pt} \begin{flushleft}\large \usefont{OT1}{phv}{b}{sl} \color{DarkRed}}
 \author{Kenzi Antonin}	% Author name goes here
@@ -272,18 +273,9 @@ Vis-à-billes : $J_{eq} = m \cdot \biggl(\cfrac{p}{2\pi}\biggr)^2$
 
 {\centering \includegraphics[width = 0.3\textwidth]{img/vis.JPG}}
 
-Réducteurs : $J_{eq} = J_{ch}\cdot \cfrac{1}{i^2}$
+Réducteurs : $J_{eq} = J_{ch}\cdot \cfrac{1}{i^2} $ \quad avec $ i = \cfrac{\Omega_m}{\Omega_e}$ 
 
 {\centering \includegraphics[width = 0.3\textwidth]{img/Reducteur.JPG}}
-
-\hformbar
-
-
-\formdesc{Réglage de la tension / vitesse}
-
-\hformbar
-
-\formdesc{Anti-windup}
 
 \hformbar
 
@@ -351,7 +343,7 @@ $\tau_{ii} = N \cdot \sum\tau_{pct} = N \cdot (\tau_{cm}+ \tau_{mi})$ ,avec N $\
 \end{itemize}
 
 
-\formdesc{Réglage du courant / position}
+\formdesc{régulation imbriquée position – courant}
 \begin{figure}[H]
     \begin{center}
         \includegraphics[width = 0.49\textwidth]{img/Regulation_courrant_pos.JPG}
@@ -359,10 +351,294 @@ $\tau_{ii} = N \cdot \sum\tau_{pct} = N \cdot (\tau_{cm}+ \tau_{mi})$ ,avec N $\
 \end{figure}
 
 \formtitle{Capteur de position}
-\underline{Fonction de transfert (approximation) :}
+\underline{Fonction de transfert  (approx.) :}
 
 \vspace{3mm}
-$G_{m\theta}(s) = \cfrac{K_{m\theta}}{1+\tau_{m\theta}} $
+$G_{m\theta}(s) = \cfrac{K_{m\theta}}{1+s\cdot\tau_{m\theta}} $
+
+$X_{commande} \cdot N_1 = X_{mesure} \cdot N_2$
+
+$K_{m\theta} = N_2/N_1$
+
+\underline{Unité de la consigne de courant}
+
+Consigne exprimée en : 
+\begin{itemize}
+    \item Courant : $U_{ci} = I_c \cdot K'_{mi}$ avec $K'_{mi} \approxeq K_{mi}$
+    \item Couple  : $U_{ci} = T_c \cdot K'_{mi}/k'_T$ avec $k'_T \approxeq k _T$
+\end{itemize}
+
+
+\underline{Boucle fermée de courant}
+
+on peut utiliser la fonction de transfert en boucle fermée obtenue 
+précédemment (calcul « exact »), ou on peut en faire une approximation du 1er ordre, dont la fonction de 
+transfert es :
+
+$G_{iBF}(s) = \cfrac{1}{1+s\cdot\tau_{iBF}} $
+
+$G_{iBF}(0) \approxeq 1$
+
+ $\tau_{iBF} = 1/ \omega_{m\varphi 45^\circ}$ 
+
+\underline{Système à régler}
+
+$G_{a\theta}(s) = \cfrac{\theta(s)}{I_{ac}(s)} = \underbrace{\cfrac{1}{1+s\cdot\tau_{iBF}}}_{G_{iBF}(s)}\cdot k_T \cdot \underbrace{\cfrac{1}{J_t}\cfrac{1}{s^2}}_{Charge} \cdot \underbrace{\cfrac{K_{m\theta}}{1+s\cdot\tau_{m\theta}}}_{Capt-pos} $ 
+$G_{a\theta}(s) = \underbrace{\cfrac{K_{m\theta} \cdot k_T}{J_t}}_{K_{a\theta} }\cdot \cfrac{1}{1+s\cdot\tau_{iBF}} \cdot \cfrac{1}{1+s\cdot\tau_{m\theta}}$
+
+\underline{Régulateur}
+
+PD = $G_{r\theta} = K_{p\theta} \cdot (1+s\cdot\tau_{d\theta})$
+
+\underline{Ajustage}
+
+$\tau_{ref} = \sum\tau_i \text{ ou } 1/\omega_{ref} $ à -225°
+
+$\tau_{d\theta} = N \cdot \tau_{ref}$
+
+Puis ajuster $K_{p\theta}$ 0 dB pour $\omega$
+correspondant à la marge de phase souhaitée.
+
+\underline{limiteur de courant}
+
+Il nécéssaire d'ajouter un limiteur de courant sur la consigne ce qui rend le système non-linéaire.
+
+
+\underline{Réaction aux couples perturbateurs}
+
+\resizebox{.5\textwidth}{!}
+{
+$G_{v\theta}(s) = \cfrac{\cfrac{1}{Jt \cdot s^2}}{1+\cfrac{1}{Jt \cdot s^2}\cdot \cfrac{K_{m\theta}}{1+s\cdot\tau_{m\theta}} \cdot K_{p\theta} \cdot (1+s\cdot\tau_{d\theta}) \cdot G_{iBF\cdot k_T}}$
+}
+\newpage
+
+
+\formdesc{Rigidité statique d’asservissement}
+
+$K = \lim\limits_{t \rightarrow \infty} \biggl[\cfrac{|T_{res}(t)|}{|e_\theta(t)|}\biggr] = \lim\limits_{s \rightarrow 0} \biggl[\cfrac{1}{|G_{\theta}(s)|}\biggr]$
+
+en Statique 
+$T_{em} = T_{res}$
+
+$K = \lim\limits_{s \rightarrow 0}[G_{r\theta(s)}\cdot G_{iBF}\cdot k_T]$
+
+si regulateur PD : 
+
+$K = \lim\limits_{s \rightarrow 0}\biggl[K_{p\theta} \cdot (1+s\cdot\tau_{d\theta}) \cdot \cfrac{1}{1+s\cdot\tau_{iBF}} \cdot k_T\biggr] = K_{p\theta \cdot k_T}$
+
+\underline{Dilemme du choix du coefficient N}
+
+Bonne marge de phase : N grand
+
+peu d'erreur statique : N petit \\
+
+solution : ajouter un filtre de consigne.
+
+$G_f\theta = \cfrac{1}{1+s\cdot\tau_{fc\theta}}$
+
+ne détériore pas la réaction aux couples perturbateurs
+
+Evite d'exciter les hautes fréquences par la consigne mais limite la rapidité de réaction aux sauts de consignes
+
+\underline{Effet d’une composante I}
+
+\begin{itemize}
+    \item annulerait l’erreur statique
+    \item convient avec rigidité statique d'asservissement $ K = \infty $
+    \item provoque un bref écart de position lorsque le couple perturbateur disparait (overshoots)
+    \item à éviter lorsqu'il s'agit de garantir un suivi de consigne à forte dynamique
+\end{itemize}
+
+
+\formdesc{Commande a priori}
+
+\includegraphics[width=0.49\textwidth]{img/com_apriorie.JPG}
+
+Connaisance parfaite de la réaction du système 
+
+\includegraphics[width=0.49\textwidth]{img/com_apriorie_2.JPG}
+
+\newpage
+
+\formdesc{Standard de facto ( >95\% des cas)}
+
+Régulateur ajustés séparement :
+
+$\rightarrow $ régulateur de courant, en fonction du moteur
+
+$\rightarrow $ régulateur de vitesse, en fonction de la charge mécanique
+
+$\rightarrow $ régulateur de position, pour assurer la rigidité parfois exploitant un autre capteur (en aval du réducteur)
+
+\includegraphics[width=0.49\textwidth]{img/stad_facto.JPG}
+
+
+\includegraphics[width=0.49\textwidth]{img/stad_facto_2.JPG}
+
+\formdesc{Arbre élastique }
+
+\includegraphics[width=0.49\textwidth]{img/arbre_elastique.JPG}
+
+$\cfrac{\theta_m(s)}{T_{em}(s)} = \cfrac{s^2\:J_{ch} + s(R_{ft} + R_{fch}) + k_t}{a_4\: s^4 + a_3\: s^3 + a_2 \:s^2 + a_1 \:s}$\\
+{\centering
+\includegraphics[width=0.3\textwidth]{img/arbre_elastique_2.JPG}
+}
+avec :\\
+{\normalsize
+$
+    \begin{aligned}
+        a_4 &= J_m \cdot J_{ch}\\
+        a_3 &= J_m \cdot  (R_{ft} + R_{fch}) + J_{ch} \cdot (R_{ft} + R_{fm})\\
+        a_2 &= (J_m + J_{ch})\cdot k_t + (R_{fch} + R_{fm}) \cdot R_{ft} + R_{fch} \cdot R_{fm}\\
+        a_1 &= J_m \cdot j_{ch}\\
+    \end{aligned}
+$
+}
+avec simplification : 
+{\normalsize
+$
+    \begin{aligned}
+        a_4 &= J_m \cdot J_{ch}\\
+        a_3 &=( J_m + J_{ch}) \cdot R_{fe}\\
+        a_2 &= (J_m + J_{ch})\cdot k_t\\
+        a_1 &= 0\\
+    \end{aligned}
+$
+}
+
+$R_{fe} = \cfrac{J_m \: R_{fch} + J_{ch}\:R_{fm}}{J_m + J_{ch}} + R_{ft}$
+
+
+\includegraphics[width=0.49\textwidth]{img/arbre_elastique_3.JPG}
+
+{\normalsize
+$\cfrac{\theta_m(s)}{T_{em}(s)} = \cfrac{s^2\:J_{ch} + s\:R_{fe} + k_t}{J_mJ_{ch}\: s^4 + R_{fe}(J_m+J_{ch})\: s^3 + k_t(J_m+J_{ch}) \:s^2 }$\\
+
+
+$\cfrac{\theta_{ch}(s)}{T_{em}(s)} = \cfrac{s\:R_{fe} + k_t}{J_mJ_{ch}\: s^4 + R_{fe}(J_m+J_{ch})\: s^3 + k_t(J_m+J_{ch}) \:s^2 }$\\
+
+
+$\cfrac{\theta_{ch}(s)}{\theta_m(s)} = \cfrac{s\:R_{fe} + k_t}{s^2\: J_ch + s\:R_{fe} + k_t}$\\
+}
+
+\formtitle{Réponse harmonique}
+
+\includegraphics[width=0.49\textwidth]{img/arbre_elastique_rep.JPG}
+
+
+\formtitle{Effet de l’arbre élastique en régulation de courant}
+
+\includegraphics[width=0.49\textwidth]{img/arbre_elastique_bloc.JPG}
+
+
+\formtitle{Effet de l’arbre élastique en régulation de vitesse}
+
+\includegraphics[width=0.49\textwidth]{img/arbre_elastique_vit.JPG}
+
+
+\formtitle{Effet de l’arbre élastique en régulation de position}
+\includegraphics[width=0.49\textwidth]{img/arbre_elastique_pos.JPG}
+
+
+\newpage
+
+\formdesc{Rappel : }
+
+\formtitle{Équation de tension : }
+
+{\hfill $u_a(t) = R_a \cdot i_a + L_a \cfrac{di_a(t)}{dt}+u_{im}(t)$\hfill}
+
+{\hfill $I_a(s) = [U_a(s).U_{im}(s)] \cdot \cfrac{ \cfrac{1}{R_a}}{1+s\cfrac{L_a}{R_a}}  $\hfill}
+
+
+\formtitle{Équation de mouvement :} 
+
+\vspace{3mm}
+
+{\hfill $Jt \cfrac{d\Omega(t)}{dt} = T_{em}(t) - C_v \Omega(t) - T_{res}(t) $\hfill}
+
+{\hfill $\Omega(s) = [T_{em}(s).T_{res}(s)] \cdot \cfrac{ \cfrac{1}{C_v}}{1+s\cfrac{J_t}{C_v}}  $\hfill}
+
+\formtitle{Équation de couplage : }
+
+{\hfill $k_T = \cfrac{T_{em}(t)}{i_a(t)} = \cfrac{u_{im}(t)}{\Omega(t) }= k_u$\hfill}
+
+\formtitle{Équation utile : }
+
+{\hfill $u_a(t) = U_{in} + R_a \cdot i_a  = k_e \Omega + R_a \cfrac{T_{res}}{k_t}$\hfill}
+
+avec 
+
+$T_{res} = F_{frot} \cdot V$ par moteur 
+
+\formtitle{Constante de temps  : }
+
+{\hfill $\tau_e = \cfrac{L_a}{R_a}$\hfill}
+
+
+{\hfill $\tau_m = \cfrac{J_t\cdot R_a}{k_T\cdot k_E}$\hfill}
+
+\formtitle{Fonctions de transfert : }
+
+\vspace{3mm}
+
+{\hfill $G_{u\omega} = \cfrac{\Omega(s)}{U_a(s)} = \cfrac{1}{k_E}\cdot\cfrac{1}{1 + s \cdot \tau_m + s^2 \cdot \tau_m \cdot \tau_e} $\hfill}
+
+\vspace{3mm}
+{\hfill $G_{ui} = \cfrac{I_a(s)}{U_a(s)} = \cfrac{J_t}{k_E\cdot k_T}\cdot\cfrac{1}{1 + s \cdot \tau_m + s^2 \cdot \tau_m \cdot \tau_e} $\hfill}
+
+\formtitle{Pôles : }
+
+{\hfill $s_{1,2} = \cfrac{-\tau_m \pm \sqrt{\tau_m^2 - 4 \cdot \tau_m \cdot \tau_e}}{2 \cdot \tau_m \cdot \tau_e} $\hfill}
+
+\vspace{3mm}
+
+\formtitle{si :  $\tau_m \leqslant 4 \cdot\tau_e$}
+
+\vspace{3mm}
+
+{\hfill $ \cfrac{1}{(1+s\cdot \tau_{max})(1+s\cdot \tau_{min})}$\hfill}
+
+avec : {\hfill $\tau_{max,min} = -\cfrac{1}{s_{1,2}}$\hfill}
+
+\vspace{3mm}
+
+\formtitle{si : $\tau_m \ggg \tau_e $}
+
+{\hfill $ \cfrac{1}{(1+s\cdot \tau_{m})(1+s\cdot \tau_{e})}$\hfill}
+
+ \newpage
+
+ \formtitle{Rappel sur le moment d’inertie}
+
+ \vspace{3mm}
+
+Courroie ou crémaillère : $J_{eq} = m \cdot r^2$
+
+\vspace{3mm}
+
+Vis-à-billes : $J_{eq} = m \cdot \biggl(\cfrac{p}{2\pi}\biggr)^2$
+
+
+\vspace{3mm}
+
+Réducteurs : $J_{eq} = J_{ch}\cdot \cfrac{1}{i^2} $ \quad avec $ i = \cfrac{\Omega_m}{\Omega_e}$ 
+
+\vspace{3mm}
+
+\formtitle{Réglage du courant / couple}
+
+\vspace{3mm}
+
+\resizebox{.5\textwidth}{!}
+{
+    {$G_{ai}(s) = K_{ai} \cdot \cfrac{s}{1+s \cdot \tau_m + s^2 \cdot \tau_e \cdot \tau_m} \cdot \cfrac{1}{1+s \cdot \tau_{cm}}\cdot \cfrac{1}{1+s \cdot \tau_{mi}} $}
+}
+
+\vspace{3mm}
+
+{$K_{ai} = \cfrac{K_{cm} \cdot K_{mi} \cdot J_t}{k_t \cdot k_E}  = \cfrac{\tau_m\cdot K_{cm}}{R_a}$}
+
+
 
 \end{document}
-
