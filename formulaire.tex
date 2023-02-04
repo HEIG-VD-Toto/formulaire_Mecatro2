@@ -384,7 +384,7 @@ $G_{iBF}(0) \approxeq 1$
 \underline{Système à régler}
 
 $G_{a\theta}(s) = \cfrac{\theta(s)}{I_{ac}(s)} = \underbrace{\cfrac{1}{1+s\cdot\tau_{iBF}}}_{G_{iBF}(s)}\cdot k_T \cdot \underbrace{\cfrac{1}{J_t}\cfrac{1}{s^2}}_{Charge} \cdot \underbrace{\cfrac{K_{m\theta}}{1+s\cdot\tau_{m\theta}}}_{Capt-pos} $ 
-$G_{a\theta}(s) = \underbrace{\cfrac{K_{m\theta} \cdot k_T}{J_t}}_{K_{a\theta} }\cdot \cfrac{1}{1+s\cdot\tau_{iBF}} \cdot \cfrac{1}{1+s\cdot\tau_{m\theta}}$
+$G_{a\theta}(s) = \underbrace{\cfrac{K_{m\theta} \cdot k_T}{J_t}}_{K_{a\theta} }\cdot \cfrac{1}{s^2}\cdot \cfrac{1}{1+s\cdot\tau_{iBF}} \cdot \cfrac{1}{1+s\cdot\tau_{m\theta}}$
 
 \underline{Régulateur}
 
@@ -392,7 +392,9 @@ PD = $G_{r\theta} = K_{p\theta} \cdot (1+s\cdot\tau_{d\theta})$
 
 \underline{Ajustage}
 
-$\tau_{ref} = \sum\tau_i \text{ ou } 1/\omega_{ref} $ à -225°
+$\tau_{ref} = \sum\tau_i \text{ ou } 1/\omega_{ref} $ à -225°\\
+
+$\tau_{m\theta} = \tau_{ref} - \tau_{iBF}$\\
 
 $\tau_{d\theta} = N \cdot \tau_{ref}$
 
@@ -417,7 +419,8 @@ $G_{v\theta}(s) = \cfrac{\cfrac{1}{Jt \cdot s^2}}{1+\cfrac{1}{Jt \cdot s^2}\cdot
 
 $K = \lim\limits_{t \rightarrow \infty} \biggl[\cfrac{|T_{res}(t)|}{|e_\theta(t)|}\biggr] = \lim\limits_{s \rightarrow 0} \biggl[\cfrac{1}{|G_{\theta}(s)|}\biggr]$
 
-en Statique 
+
+en Statique : 
 $T_{em} = T_{res}$
 
 $K = \lim\limits_{s \rightarrow 0}[G_{r\theta(s)}\cdot G_{iBF}\cdot k_T]$
@@ -449,6 +452,7 @@ Evite d'exciter les hautes fréquences par la consigne mais limite la rapidité 
     \item à éviter lorsqu'il s'agit de garantir un suivi de consigne à forte dynamique
 \end{itemize}
 
+\includegraphics[width=0.53\textwidth]{img/flemem.JPG}
 
 \formdesc{Commande a priori}
 
@@ -458,7 +462,6 @@ Connaisance parfaite de la réaction du système
 
 \includegraphics[width=0.49\textwidth]{img/com_apriorie_2.JPG}
 
-\newpage
 
 \formdesc{Standard de facto ( >95\% des cas)}
 
@@ -523,21 +526,29 @@ $\cfrac{\theta_{ch}(s)}{\theta_m(s)} = \cfrac{s\:R_{fe} + k_t}{s^2\: J_ch + s\:R
 
 \formtitle{Réponse harmonique}
 
-\includegraphics[width=0.49\textwidth]{img/arbre_elastique_rep.JPG}
+\includegraphics[width=0.54\textwidth]{img/arbre_elastique_rep.JPG}
 
 
 \formtitle{Effet de l’arbre élastique en régulation de courant}
 
-\includegraphics[width=0.49\textwidth]{img/arbre_elastique_bloc.JPG}
+\includegraphics[width=0.52\textwidth]{img/arbre_elastique_bloc.JPG}
 
 
 \formtitle{Effet de l’arbre élastique en régulation de vitesse}
 
-\includegraphics[width=0.49\textwidth]{img/arbre_elastique_vit.JPG}
+\includegraphics[width=0.45\textwidth]{img/arbre_elastique_vit.JPG}
 
 
 \formtitle{Effet de l’arbre élastique en régulation de position}
-\includegraphics[width=0.49\textwidth]{img/arbre_elastique_pos.JPG}
+
+\includegraphics[width=0.45\textwidth]{img/arbre_elastique_pos.JPG}
+
+\formtitle{Convertion PVC to PC }\\
+
+$K_{p\theta} =  K_{p\theta} \cdot K_{p\Omega}$\\
+
+
+$K_{p\theta} =  \cfrac{1}{K_{p\theta}}$
 
 
 \newpage
@@ -637,8 +648,127 @@ Réducteurs : $J_{eq} = J_{ch}\cdot \cfrac{1}{i^2} $ \quad avec $ i = \cfrac{\Om
 
 \vspace{3mm}
 
-{$K_{ai} = \cfrac{K_{cm} \cdot K_{mi} \cdot J_t}{k_t \cdot k_E}  = \cfrac{\tau_m\cdot K_{cm}}{R_a}$}
+{$K_{ai} = \cfrac{K_{cm} \cdot K_{mi} \cdot J_t}{k_t \cdot k_E}  = \cfrac{\tau_m\cdot K_{cm}}{R_a}$}\\
 
+
+\formtitle{Capteur de position}
+
+\vspace{3mm}
+$G_{m\theta}(s) = \cfrac{K_{m\theta}}{1+s\cdot\tau_{m\theta}} $\\
+
+$X_{commande} \cdot N_1 = X_{mesure} \cdot N_2$
+
+$K_{m\theta} = N_2/N_1$
+
+\underline{Unité de la consigne de courant}
+
+\begin{itemize}
+    \item Courant : $U_{ci} = I_c \cdot K'_{mi}$ avec $K'_{mi} \approxeq K_{mi}$
+    \item Couple  : $U_{ci} = T_c \cdot K'_{mi}/k'_T$ avec $k'_T \approxeq k _T$
+\end{itemize}
+
+
+\underline{Boucle fermée de courant}
+
+$G_{iBF}(s) = \cfrac{1}{1+s\cdot\tau_{iBF}} $
+
+$G_{iBF}(0) \approxeq 1$
+
+ $\tau_{iBF} = 1/ \omega_{m\varphi 45^\circ}$ \\
+
+\underline{Système à régler}
+
+$G_{a\theta}(s) = \cfrac{\theta(s)}{I_{ac}(s)} = \underbrace{\cfrac{1}{1+s\cdot\tau_{iBF}}}_{G_{iBF}(s)}\cdot k_T \cdot \underbrace{\cfrac{1}{J_t}\cfrac{1}{s^2}}_{Charge} \cdot \underbrace{\cfrac{K_{m\theta}}{1+s\cdot\tau_{m\theta}}}_{Capt-pos} $ 
+$G_{a\theta}(s) = \underbrace{\cfrac{K_{m\theta} \cdot k_T}{J_t}}_{K_{a\theta} }\cdot \cfrac{1}{s^2}\cdot \cfrac{1}{1+s\cdot\tau_{iBF}} \cdot \cfrac{1}{1+s\cdot\tau_{m\theta}}$
+
+\underline{Régulateur}
+
+PD = $G_{r\theta} = K_{p\theta} \cdot (1+s\cdot\tau_{d\theta})$
+
+\underline{Ajustage}
+
+$\tau_{ref} = \sum\tau_i \text{ ou } 1/\omega_{ref} $ à -225°\\
+
+$\tau_{m\theta} = \tau_{ref} - \tau_{iBF}$\\
+
+$\tau_{d\theta} = N \cdot \tau_{ref}$
+
+
+\underline{Réaction aux couples perturbateurs}
+
+\resizebox{.5\textwidth}{!}
+{
+$G_{v\theta}(s) = \cfrac{\cfrac{1}{Jt \cdot s^2}}{1+\cfrac{1}{Jt \cdot s^2}\cdot \cfrac{K_{m\theta}}{1+s\cdot\tau_{m\theta}} \cdot K_{p\theta} \cdot (1+s\cdot\tau_{d\theta}) \cdot G_{iBF\cdot k_T}}$
+}
+\newpage
+
+
+\underline{Rigidité statique d’asservissement}\\
+
+$K = \lim\limits_{t \rightarrow \infty} \biggl[\cfrac{|T_{res}(t)|}{|e_\theta(t)|}\biggr] = \lim\limits_{s \rightarrow 0} \biggl[\cfrac{1}{|G_{\theta}(s)|}\biggr]$\\
+
+en Statique : \\
+$T_{em} = T_{res}$\\
+
+$K = \lim\limits_{s \rightarrow 0}[G_{r\theta(s)}\cdot G_{iBF}\cdot k_T]$\\
+
+si regulateur PD : \\
+
+$K = \lim\limits_{s \rightarrow 0}\biggl[K_{p\theta} \cdot (1+s\cdot\tau_{d\theta}) \cdot \cfrac{1}{1+s\cdot\tau_{iBF}} \cdot k_T\biggr] = K_{p\theta \cdot k_T}$\\
+
+$G_f\theta = \cfrac{1}{1+s\cdot\tau_{fc\theta}}$\\
+
+\formtitle{Kx Rigidité}
+
+\vspace{3mm}
+
+Courroie ou crémaillère : $K_x = \cfrac{K_\theta}{r^2}$
+
+\vspace{3mm}
+
+Vis-à-billes : $K_x = \bigg(\cfrac{2\pi}{p}\bigg)^2 \cdot K_\theta$
+
+
+\vspace{3mm}
+
+Réducteurs : $K_x = K_m \cdot i^2$ 
+
+\vspace{3mm}
+
+\underline{Arbre élastique }\\
+
+$\cfrac{\theta_m(s)}{T_{em}(s)} = \cfrac{s^2\:J_{ch} + s(R_{ft} + R_{fch}) + k_t}{a_4\: s^4 + a_3\: s^3 + a_2 \:s^2 + a_1 \:s}$\\
+
+avec simplification : 
+{\normalsize
+$
+    \begin{aligned}
+        a_4 &= J_m \cdot J_{ch}\\
+        a_3 &=( J_m + J_{ch}) \cdot R_{fe}\\
+        a_2 &= (J_m + J_{ch})\cdot k_t\\
+        a_1 &= 0\\
+    \end{aligned}
+$
+}\\
+
+$R_{fe} = \cfrac{J_m \: R_{fch} + J_{ch}\:R_{fm}}{J_m + J_{ch}} + R_{ft}$
+
+{\normalsize
+$\cfrac{\theta_m(s)}{T_{em}(s)} = \cfrac{s^2\:J_{ch} + s\:R_{fe} + k_t}{J_mJ_{ch}\: s^4 + R_{fe}(J_m+J_{ch})\: s^3 + k_t(J_m+J_{ch}) \:s^2 }$\\
+
+
+$\cfrac{\theta_{ch}(s)}{T_{em}(s)} = \cfrac{s\:R_{fe} + k_t}{J_mJ_{ch}\: s^4 + R_{fe}(J_m+J_{ch})\: s^3 + k_t(J_m+J_{ch}) \:s^2 }$\\
+
+
+$\cfrac{\theta_{ch}(s)}{\theta_m(s)} = \cfrac{s\:R_{fe} + k_t}{s^2\: J_ch + s\:R_{fe} + k_t}$\\
+}
+
+\formtitle{Convertion PVC to PC }\\
+
+$K_{p\theta} =  K_{p\theta} \cdot K_{p\Omega}$\\
+
+
+$K_{p\theta} =  \cfrac{1}{K_{p\theta}}$
 
 
 \end{document}
